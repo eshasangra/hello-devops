@@ -29,11 +29,17 @@ pipeline {
             steps {
                 sh '''
                 echo "[4] Testing service from inside the running container"
+                echo "waiting for app to boot..."
+                sleep 3
+
                 echo "curl output below:"
-                docker exec hello-container curl -s http://localhost:5000
+                docker exec hello-container curl -s http://localhost:5000 || {
+                  echo "first try failed, retrying in 2s..."
+                  sleep 2
+                  docker exec hello-container curl -s http://localhost:5000
+                }
                 '''
             }
         }
     }
 }
-
