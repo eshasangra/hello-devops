@@ -28,9 +28,9 @@ pipeline {
         stage('Smoke Test') {
             steps {
                 sh '''
-                echo "[4] Testing that the container is actually serving"
+                echo "[4] Testing service from inside the running container"
                 echo "curl output below:"
-                curl -s http://localhost:5001
+                docker exec hello-container curl -s http://localhost:5000
                 '''
             }
         }
